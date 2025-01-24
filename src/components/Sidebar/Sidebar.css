@@ -1,0 +1,61 @@
+.sidebar {
+  width: 20%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.s-logo {
+  height: 80px;
+  padding: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.s-logo > img {
+  width: 160px;
+}
+.s-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 40px;
+  width: 100%;
+  margin: 15px 0;
+}
+.s-options a,
+.s-settings a {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 10px 14px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+.s-options a:hover,
+.s-settings a:hover {
+  background-color: #f3f7fd;
+  color: #1b48da;
+}
+.s-active {
+  background-color: #f3f7fd;
+  color: #1b48da;
+}
+.s-inactive {
+  color: #3b3c51;
+}
+.s-settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 40px;
+  border-top: 1px solid #f6f6f9;
+  border-bottom: 1px solid #f6f6f9;
+}
