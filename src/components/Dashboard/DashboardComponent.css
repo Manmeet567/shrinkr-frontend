@@ -1,0 +1,65 @@
+.dashboard-component {
+  width: 100%;
+  border-top: 1px solid #ececf2;
+  border-left: 1px solid #ececf2;
+  flex: 1;
+  padding: 60px 40px;
+}
+
+.dc-clicks > span:nth-child(1) {
+  color: #181820;
+  font-weight: 700;
+  font-size: 20px;
+  margin-right: 40px;
+}
+.dc-clicks > span:nth-child(2) {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1b48da;
+}
+.dc-analytics {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dc-date-wise,
+.dc-click-devices {
+  width: 49%;
+  border-radius: 6px;
+  border: 1px solid #ececf2;
+  box-shadow: 0px 1px 2px 0px #1018280d;
+  margin-top: 60px;
+  min-height: 500px;
+  padding: 15px 30px;
+}
+.dc-date-wise > p,
+.dc-click-devices > p {
+  color: #1b48da;
+  font-size: 14px;
+  font-weight: 500;
+}
+.dc-data {
+  margin-top: 30px;
+  min-height: 100%;
+  overflow: auto;
+}
+.dc-data-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.dc-data-bar > .dcd-bar {
+  margin: 0 10px;
+  flex: 1;
+  background-color: #fff;
+  height: 15px;
+}
+.dcdb {
+  background-color: #1b48da;
+  height: 100%;
+}

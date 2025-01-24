@@ -72,6 +72,21 @@ function AuthForm({ type }) {
     <div style={{ fontSize: "40px", margin: "50px" }}>Loading...</div>
   ) : (
     <div className="auth-form">
+      <div className="af-nav">
+        <img src={logo} alt="logo" />
+        <div className="afn-btns">
+          <Link to="/signup">
+            <button className={type === "signup" ? "afn-active" : ""}>
+              Signup
+            </button>
+          </Link>
+          <Link to="/login">
+            <button className={type === "login" ? "afn-active" : ""}>
+              Login
+            </button>
+          </Link>
+        </div>
+      </div>
       <div className="login-bg">
         <img src={loginBg} alt="bg" />
       </div>
