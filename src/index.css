@@ -15,3 +15,10 @@ html {
   background-color: #fff;
   font-family: "Manrope", serif;
 }
+
+.dashboard{
+  display: flex;
+}
+.layout{
+  width: 80%;
+}

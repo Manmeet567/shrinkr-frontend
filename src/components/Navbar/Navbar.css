@@ -1,0 +1,78 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 20px;
+}
+.n-greet > p {
+  margin-left: 21px;
+  font-size: 14px;
+  color: #878ba9;
+  margin-top: 2px;
+}
+.ng-greet {
+  display: flex;
+  align-items: center;
+}
+.ng-greet > img {
+  width: 16px;
+}
+.ng-greet > span {
+  color: #181820;
+  font-size: 16px;
+  font-weight: 700;
+}
+.n-left-options {
+  display: flex;
+  align-items: center;
+  height: 72px;
+}
+.n-left-options > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  height: 40px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  background-color: #1b48da;
+  cursor: pointer;
+  margin-right: 20px;
+}
+.n-search-bar {
+  width: 240px;
+  border: 1px solid #ececf2;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  color: #878ba9;
+  margin-right: 40px;
+}
+.n-search-bar > input {
+  border: none;
+  outline: none;
+  color: #878ba9;
+}
+.n-search-bar > input::placeholder {
+  color: #878ba9;
+}
+.n-profile-logo {
+  width: 40px;
+  height: 40px;
+  background-color: #fde48a;
+  font-size: 14px;
+  border-radius: 50%;
+  color: #923e0e;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}

@@ -6,6 +6,9 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <Sidebar />
+      <div className="layout">
+        <Navbar />
+      </div>
     </div>
   );
 }
