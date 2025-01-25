@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+import apiClient from "../../../utils/apiClient";
 
 const initialState = {
   token: null,
@@ -33,6 +34,18 @@ export const loginUser = createAsyncThunk(
         userData
       );
       return response.data.token;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
+export const getUserData = createAsyncThunk(
+  "auth/getUserData",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get("/user/get-user");
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.error || error.message);
     }
@@ -81,6 +94,18 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         toast.error(action.payload);
+      })
+      .addCase(getUserData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUserData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userData = action.payload;
+      })
+      .addCase(getUserData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

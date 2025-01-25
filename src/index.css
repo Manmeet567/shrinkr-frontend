@@ -5,6 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
+  font-family: "Manrope", serif;
 }
 
 html {
@@ -13,13 +14,12 @@ html {
 
 .app {
   background-color: #fff;
-  font-family: "Manrope", serif;
 }
 
-.dashboard{
+.dashboard {
   display: flex;
 }
-.layout{
+.layout {
   width: 80%;
   display: flex;
   flex-direction: column;

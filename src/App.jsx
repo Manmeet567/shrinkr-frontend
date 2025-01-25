@@ -6,16 +6,25 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Links from "./pages/Links";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
+import { getUserData } from "./redux/slices/authSlice";
 
 function App() {
+  const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
+  const token = localStorage.getItem("token");
   useEffect(() => {
     console.log(userData);
   }, [userData]);
+
+  useEffect(() => {
+    if (token && !userData) {
+      dispatch(getUserData());
+    }
+  }, [dispatch, token, userData]);
 
   return (
     <div className="app">
