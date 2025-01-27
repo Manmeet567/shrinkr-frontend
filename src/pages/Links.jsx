@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Navbar from "../components/Navbar/Navbar";
+import LinkComponent from "../components/Links/LinkComponent";
 
 function Links() {
   return (
@@ -8,6 +9,7 @@ function Links() {
       <Sidebar />
       <div className="layout">
         <Navbar />
+        <LinkComponent />
       </div>
     </div>
   );

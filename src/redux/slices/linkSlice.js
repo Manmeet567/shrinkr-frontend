@@ -2,23 +2,36 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiClient from "../../../utils/apiClient";
 
-// Initial state
 const initialState = {
-  links: [], // Stores the list of links
-  loading: false, // Tracks loading state
-  error: null, // Stores error messages
+  links: [],
+  loading: false,
+  error: null,
 };
 
-// Async thunk for creating a link
+// Thunk to create a new link
 export const createLink = createAsyncThunk(
   "links/createLink",
   async (linkData, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/link/create-link`, linkData);
       toast.success(response.data.message);
-      return response.data.link; // Return the created link data
+      return response.data.link;
     } catch (error) {
       toast.error("Failed to create link.");
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+// Thunk to get all links for the current user
+export const getLinks = createAsyncThunk(
+  "links/getLinks",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get(`/link/get-links`); 
+      return response.data; 
+    } catch (error) {
+      toast.error("Failed to fetch links.");
       return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
@@ -35,20 +48,30 @@ const linkSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Handle pending state for createLink
       .addCase(createLink.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      // Handle fulfilled state for createLink
       .addCase(createLink.fulfilled, (state, action) => {
         state.loading = false;
-        state.links.push(action.payload); // Add the new link to the list
+        state.links.push(action.payload); 
       })
-      // Handle rejected state for createLink
       .addCase(createLink.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to create link.";
+      })
+
+      .addCase(getLinks.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getLinks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.links = action.payload; 
+      })
+      .addCase(getLinks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch links.";
       });
   },
 });

@@ -50,8 +50,11 @@ function SlidingPanel({ isVisible, togglePanel, type }) {
       expiration: isExpiryEnabled ? expiryDate : null,
     };
 
-    console.log(linkData);
     dispatch(createLink(linkData));
+    setDestinationUrl("");
+    setRemarks("");
+    setExpiryDate("");
+    setIsExpiryEnabled(false);
   };
 
   return (

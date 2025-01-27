@@ -16,7 +16,8 @@ html {
   background-color: #fff;
 }
 
-.dashboard {
+.dashboard,
+.links {
   display: flex;
 }
 .layout {
