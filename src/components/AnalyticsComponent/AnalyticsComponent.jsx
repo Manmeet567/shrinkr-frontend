@@ -1,32 +1,20 @@
 import React from "react";
 import DataTable from "react-data-table-component";
-import { setCurrentPage } from "../../redux/slices/linkSlice";
+import { setAnalyticsCurrentPage } from "../../redux/slices/analyticsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import "./LinkComponent.css";
-import { MdEdit } from "react-icons/md";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import "./AnalyticsComponent.css";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-import { IoCopyOutline } from "react-icons/io5";
-import { getLinks } from "../../redux/slices/linkSlice";
 
-const getStatus = (expiration) => {
-  const currentDate = new Date();
-  return expiration === null || new Date(expiration) > currentDate
-    ? "Active"
-    : "Inactive";
-};
-
-const LinkComponent = () => {
+const AnalyticsComponent = () => {
   const dispatch = useDispatch();
-  const { linksByPage, totalPages, currentPage, loading, shortUrlIds } =
-    useSelector((state) => state.links);
-  const limit = 10;
+  const { analyticsByPage, totalPages, currentPage, loading } =
+    useSelector((state) => state.analytics);
 
-  const links = linksByPage[currentPage] || [];
+  const analytics = analyticsByPage[currentPage] || [];
 
   const columns = [
     {
-      name: "Date",
+      name: "Timestamp",
       selector: (row) =>
         new Date(row.createdAt).toLocaleString("en-US", {
           year: "numeric",
@@ -39,18 +27,18 @@ const LinkComponent = () => {
     },
     {
       name: "Original Link",
-      selector: (row) => row.destination_url,
+      selector: (row) => row.original_url,
       cell: (row) => (
         <a
-          href={row.destination_url}
+          href={row.original_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="sl-original-link"
+          className="analytics-original-link"
           style={{
             color: "#3B3C51",
           }}
         >
-          {row.destination_url}
+          {row.original_url}
         </a>
       ),
     },
@@ -58,45 +46,23 @@ const LinkComponent = () => {
       name: "Short Link",
       selector: (row) => row.short_url_id,
       cell: (row) => (
-        <div className="sl-container">
-          <p
-            className="sl-link"
-            style={{
-              color: "#3B3C51",
-            }}
-          >
-            {`${import.meta.env.VITE_SERVER_BASE_URL}/${row.short_url_id}`}
-          </p>
-          <IoCopyOutline className="sl-copy-icon" />
-        </div>
+        <p
+          className="analytics-short-link"
+          style={{
+            color: "#3B3C51",
+          }}
+        >
+          {`${import.meta.env.VITE_SERVER_BASE_URL}/${row.short_url_id}`}
+        </p>
       ),
     },
     {
-      name: "Remarks",
-      selector: (row) => row.remarks,
+      name: "IP Address",
+      selector: (row) => row.IP || "N/A",
     },
     {
-      name: "Clicks",
-      selector: (row) => row.clicks || "N/A",
-    },
-    {
-      name: "Status",
-      selector: (row) => getStatus(row.expiration),
-      sortable: true,
-      cell: (row) => {
-        const status = getStatus(row.expiration);
-        const color = status === "Active" ? "#1EB036" : "#B0901E";
-        return <span style={{ color }}>{status}</span>;
-      },
-    },
-    {
-      name: "Action",
-      cell: () => (
-        <div>
-          <MdEdit className="icon-button" />
-          <RiDeleteBin6Line className="icon-button" />
-        </div>
-      ),
+      name: "User Device",
+      selector: (row) => row.user_os || "Unknown",
     },
   ];
 
@@ -127,10 +93,7 @@ const LinkComponent = () => {
 
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
-      if (page !== currentPage) {
-        dispatch(setCurrentPage(page));
-        dispatch(getLinks({ page, limit })); 
-      }
+      dispatch(setAnalyticsCurrentPage(page));
     }
   };
 
@@ -153,17 +116,17 @@ const LinkComponent = () => {
   };
 
   return (
-    <div className="link-component">
+    <div className="analytics-component">
       {loading ? (
         <p>Loading...</p>
-      ) : links?.length === 0 ? (
-        <p>Please create one link</p>
+      ) : analytics?.length === 0 ? (
+        <p>No analytics data available.</p>
       ) : (
-        <div className="lc-data-table">
-          <div className="lcdt-table">
+        <div className="ac-data-table">
+          <div className="acd-table">
             <DataTable
               columns={columns}
-              data={links}
+              data={analytics}
               customStyles={customStyles}
             />
           </div>
@@ -191,4 +154,4 @@ const LinkComponent = () => {
   );
 };
 
-export default LinkComponent;
+export default AnalyticsComponent;

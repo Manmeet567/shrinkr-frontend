@@ -2,5 +2,134 @@
   width: 100%;
   flex: 1;
   padding: 60px 40px;
-  background-color: #ececf2;
+  background-color: #eeeeee;
+}
+
+.lc-data-table {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 212px);
+  overflow: hidden;
+}
+
+.lcdt-table {
+  max-height: 600px;
+  overflow: auto;
+  box-shadow: 0px 4px 4px 0px #0000000a;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.pagination-button {
+  border-radius: 4px;
+  width: 25px;
+  height: 25px;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 4px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: #fff;
+  border: 0.66px solid #dfe3e8;
+  color: #212b36;
+}
+
+.pagination-button-un {
+  background-color: #fff;
+  border: 0.66px solid #dfe3e8;
+  color: #c4cdd5;
+  border: none;
+  border-radius: 4px;
+  width: 25px;
+  height: 25px;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 8px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.pagination-button:disabled {
+  background-color: #919eab;
+  color: #c4cdd5;
+  cursor: not-allowed;
+}
+
+.pagination-button-un:disabled {
+  background-color: #919eab;
+  color: #c4cdd5;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #333;
+}
+
+.pb-active {
+  border: 0.66px solid #4200ff;
+  color: #4200ff;
+}
+
+.sl-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+}
+
+.sl-link {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 140px;
+  cursor: pointer;
+}
+.sl-original-link {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sl-link:hover,
+.sl-original-link:hover {
+  overflow: auto;
+}
+
+.sl-link::-webkit-scrollbar,
+.sl-original-link::-webkit-scrollbar {
+  height: 0px;
+}
+
+.sl-copy-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.icon-button {
+  font-size: 20px;
+  margin-right: 15px;
+  cursor: pointer;
+  color: #3b3c51;
+}
+
+.rdt_TableCell {
+  border: 0.5px solid #f8f8f8;
+  color: #3b3c51;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 20px 24px;
+  width: 60px;
 }

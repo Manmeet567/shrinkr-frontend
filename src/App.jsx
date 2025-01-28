@@ -11,10 +11,17 @@ import Links from "./pages/Links";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import { getUserData } from "./redux/slices/authSlice";
+import { fetchAnalytics } from "./redux/slices/analyticsSlice";
+import { getLinks } from "./redux/slices/linkSlice";
 
 function App() {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
+  const { currentPage, shortUrlIds } = useSelector((state) => state.links);
+  const { currentPage: currentClickPage } = useSelector(
+    (state) => state.analytics
+  );
+  const limit = 10;
   const token = localStorage.getItem("token");
   useEffect(() => {
     console.log(userData);
@@ -24,7 +31,16 @@ function App() {
     if (token && !userData) {
       dispatch(getUserData());
     }
+    if (userData) {
+      dispatch(getLinks({ page: currentPage, limit }));
+    }
   }, [dispatch, token, userData]);
+
+  useEffect(() => {
+    if (shortUrlIds && shortUrlIds.length) {
+      dispatch(fetchAnalytics({ shortUrlIds, page: currentClickPage, limit }));
+    }
+  }, [shortUrlIds]);
 
   return (
     <div className="app">

@@ -3,9 +3,12 @@ import { toast } from "react-toastify";
 import apiClient from "../../../utils/apiClient";
 
 const initialState = {
-  links: [],
+  linksByPage: {}, // Store links for each page
+  totalPages: 1,
+  currentPage: 1,
   loading: false,
   error: null,
+  shortUrlIds: [],
 };
 
 // Thunk to create a new link
@@ -26,10 +29,26 @@ export const createLink = createAsyncThunk(
 // Thunk to get all links for the current user
 export const getLinks = createAsyncThunk(
   "links/getLinks",
-  async (_, { rejectWithValue }) => {
+  async ({ page = 1, limit = 10 }, { rejectWithValue, getState }) => {
+    const { linksByPage } = getState().links;
+
+    if (linksByPage[page]) {
+      return {
+        links: linksByPage[page],
+        page,
+        totalPages: getState().links.totalPages,
+      };
+    }
+
     try {
-      const response = await apiClient.get(`/link/get-links`); 
-      return response.data; 
+      const response = await apiClient.get(`/link/get-links`, {
+        params: { page, limit },
+      });
+      return {
+        links: response.data.links,
+        page,
+        totalPages: response.data.totalPages,
+      };
     } catch (error) {
       toast.error("Failed to fetch links.");
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -43,7 +62,10 @@ const linkSlice = createSlice({
   initialState,
   reducers: {
     resetError(state) {
-      state.error = null; // Resets the error state
+      state.error = null;
+    },
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -54,7 +76,18 @@ const linkSlice = createSlice({
       })
       .addCase(createLink.fulfilled, (state, action) => {
         state.loading = false;
-        state.links.push(action.payload); 
+        const currentPage = state.currentPage;
+
+        // Add the new link to the current page in linksByPage
+        if (state.linksByPage[currentPage]) {
+          state.linksByPage[currentPage] = [
+            ...state.linksByPage[currentPage],
+            action.payload,
+          ];
+        } else {
+          // If the current page doesn't exist in linksByPage yet
+          state.linksByPage[currentPage] = [action.payload];
+        }
       })
       .addCase(createLink.rejected, (state, action) => {
         state.loading = false;
@@ -67,7 +100,11 @@ const linkSlice = createSlice({
       })
       .addCase(getLinks.fulfilled, (state, action) => {
         state.loading = false;
-        state.links = action.payload; 
+        const { links, page, totalPages } = action.payload;
+        state.totalPages = totalPages;
+        state.currentPage = page;
+        state.linksByPage[page] = links;
+        state.shortUrlIds = links.map((link) => link.short_url_id);
       })
       .addCase(getLinks.rejected, (state, action) => {
         state.loading = false;
@@ -76,6 +113,6 @@ const linkSlice = createSlice({
   },
 });
 
-export const { resetError } = linkSlice.actions;
+export const { resetError, setCurrentPage } = linkSlice.actions;
 
 export default linkSlice.reducer;
