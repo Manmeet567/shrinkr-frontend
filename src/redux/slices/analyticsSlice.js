@@ -3,7 +3,8 @@ import { toast } from "react-toastify";
 import apiClient from "../../../utils/apiClient";
 
 const initialState = {
-  analyticsByPage: {}, // Store analytics data for each page
+  analyticsByPage: {},
+  completeAnalytics: {},
   totalPages: 1,
   currentPage: 1,
   loading: false,
@@ -47,6 +48,20 @@ export const fetchAnalytics = createAsyncThunk(
   }
 );
 
+// Thunk to fetch complete analytics
+export const getCompleteAnalytics = createAsyncThunk(
+  "analytics/getCompleteAnalytics",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get(`/clicks/analytics`);
+      return response.data; // Assuming response contains the complete analytics
+    } catch (error) {
+      toast.error("Failed to fetch complete analytics.");
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 const analyticsSlice = createSlice({
   name: "analytics",
   initialState,
@@ -57,6 +72,7 @@ const analyticsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Handle paginated analytics
       .addCase(fetchAnalytics.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -72,6 +88,20 @@ const analyticsSlice = createSlice({
       .addCase(fetchAnalytics.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch analytics.";
+      })
+      
+      // Handle complete analytics
+      .addCase(getCompleteAnalytics.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getCompleteAnalytics.fulfilled, (state, action) => {
+        state.loading = false;
+        state.completeAnalytics = action.payload; // Store complete analytics data
+      })
+      .addCase(getCompleteAnalytics.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch complete analytics.";
       });
   },
 });

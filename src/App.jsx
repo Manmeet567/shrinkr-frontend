@@ -13,6 +13,7 @@ import Settings from "./pages/Settings";
 import { getUserData } from "./redux/slices/authSlice";
 import { fetchAnalytics } from "./redux/slices/analyticsSlice";
 import { getLinks } from "./redux/slices/linkSlice";
+import { getCompleteAnalytics } from "./redux/slices/analyticsSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
     }
     if (userData) {
       dispatch(getLinks({ page: currentPage, limit }));
+      dispatch(getCompleteAnalytics());
     }
   }, [dispatch, token, userData]);
 
