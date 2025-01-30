@@ -39,7 +39,7 @@ function App() {
   }, [dispatch, token, userData]);
 
   useEffect(() => {
-    if (shortUrlIds && shortUrlIds.length) {
+    if (shortUrlIds && shortUrlIds.length > 0) {
       dispatch(fetchAnalytics({ shortUrlIds, page: currentClickPage, limit }));
     }
   }, [shortUrlIds]);

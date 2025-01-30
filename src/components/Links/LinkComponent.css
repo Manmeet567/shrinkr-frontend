@@ -3,6 +3,7 @@
   flex: 1;
   padding: 60px 40px;
   background-color: #eeeeee;
+  position: relative;
 }
 
 .lc-data-table {
@@ -132,4 +133,21 @@
   font-weight: 500;
   padding: 20px 24px;
   width: 60px;
+}
+
+.sl-copy-link{
+  width: 215px;
+  height: 42px;
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  background-color: #fff;
+  border: 1px solid #1B48DA;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
 }

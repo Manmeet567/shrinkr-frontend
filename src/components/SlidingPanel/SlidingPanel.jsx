@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./SlidingPanel.css";
 import { IoCloseSharp } from "react-icons/io5";
 import ToggleSwitch from "./ToggleSwitch";
 import { toast } from "react-toastify";
 import { isURL } from "validator";
-import { createLink } from "../../redux/slices/linkSlice";
+import { createLink, updateLink } from "../../redux/slices/linkSlice";
 import { useDispatch } from "react-redux";
 
-function SlidingPanel({ isVisible, togglePanel, type }) {
+function SlidingPanel({ isVisible, togglePanel, linkData, type }) {
   const dispatch = useDispatch();
 
   const [destinationUrl, setDestinationUrl] = useState("");
@@ -15,8 +15,20 @@ function SlidingPanel({ isVisible, togglePanel, type }) {
   const [expiryDate, setExpiryDate] = useState("");
   const [isExpiryEnabled, setIsExpiryEnabled] = useState(false);
 
+  useEffect(() => {
+    if (linkData) {
+      setDestinationUrl(linkData.destination_url);
+      setRemarks(linkData.remarks);
+      setExpiryDate(
+        linkData.expiration
+          ? new Date(linkData.expiration).toISOString().slice(0, 10)
+          : ""
+      );
+      setIsExpiryEnabled(!!linkData.expiration);
+    }
+  }, [linkData]);
+
   const handleSubmit = () => {
-    // Validate destination URL
     if (!destinationUrl) {
       toast.error("Destination URL is required.");
       return;
@@ -31,30 +43,45 @@ function SlidingPanel({ isVisible, togglePanel, type }) {
       return;
     }
 
-    // Validate remarks
     if (!remarks) {
       toast.error("Remarks are required.");
       return;
     }
 
-    // Validate expiration date if enabled
     if (isExpiryEnabled && !expiryDate) {
       toast.error("Please select an expiration date.");
       return;
     }
 
-    // Prepare link data
-    const linkData = {
+    const linkDataToSubmit = {
       destination_url: destinationUrl,
       remarks,
       expiration: isExpiryEnabled ? expiryDate : null,
     };
 
-    dispatch(createLink(linkData));
-    setDestinationUrl("");
-    setRemarks("");
-    setExpiryDate("");
-    setIsExpiryEnabled(false);
+    // Check if the form data has changed
+    if (
+      linkData &&
+      linkData.destination_url === destinationUrl &&
+      linkData.remarks === remarks &&
+      (linkData.expiration
+        ? new Date(linkData.expiration).toISOString().slice(0, 10)
+        : "") === expiryDate
+    ) {
+      toast.error("No changes detected.");
+      return;
+    }
+
+    if (type === "create") {
+      dispatch(createLink(linkDataToSubmit));
+
+      setDestinationUrl("");
+      setRemarks("");
+      setExpiryDate("");
+      setIsExpiryEnabled(false);
+    } else {
+      dispatch(updateLink({ _id: linkData._id, ...linkDataToSubmit }));
+    }
   };
 
   return (
@@ -96,7 +123,7 @@ function SlidingPanel({ isVisible, togglePanel, type }) {
               <label>Link Expiration</label>
               <ToggleSwitch
                 isChecked={isExpiryEnabled}
-                onToggle={() => setIsExpiryEnabled(!isExpiryEnabled)}
+                onToggle={() => setIsExpiryEnabled((prev) => !prev)}
               />
             </div>
             <input

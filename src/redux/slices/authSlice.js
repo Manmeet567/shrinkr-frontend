@@ -52,6 +52,37 @@ export const getUserData = createAsyncThunk(
   }
 );
 
+// New thunk for updating user data
+export const updateUserData = createAsyncThunk(
+  "auth/updateUserData",
+  async (updatedFields, { rejectWithValue }) => {
+    try {
+      console.log("updated", updatedFields);
+      const response = await apiClient.patch(
+        "/user/update-user-info",
+        updatedFields
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
+export const deleteAccount = createAsyncThunk(
+  "auth/deleteAccount",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.delete(`/user/delete-account/${userId}`);
+      toast.success(response.data.message);
+      return response.data;
+    } catch (error) {
+      toast.error("Failed to delete account.");
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -95,6 +126,7 @@ const authSlice = createSlice({
         state.error = action.payload;
         toast.error(action.payload);
       })
+      // Get User Data cases
       .addCase(getUserData.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -106,6 +138,33 @@ const authSlice = createSlice({
       .addCase(getUserData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      // Update User Data cases
+      .addCase(updateUserData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userData = action.payload.updatedUser; 
+        toast.success("User information updated successfully.");
+      })
+      .addCase(updateUserData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error(action.payload);
+      })
+      .addCase(deleteAccount.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteAccount.fulfilled, (state) => {
+        state.loading = false;
+        state.userData = null; 
+      })
+      .addCase(deleteAccount.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to delete account.";
       });
   },
 });

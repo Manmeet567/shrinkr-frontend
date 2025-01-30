@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { setAnalyticsCurrentPage } from "../../redux/slices/analyticsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import "./AnalyticsComponent.css";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
+import { fetchAnalytics } from "../../redux/slices/analyticsSlice";
 
 const AnalyticsComponent = () => {
   const dispatch = useDispatch();
-  const { analyticsByPage, totalPages, currentPage, loading } =
-    useSelector((state) => state.analytics);
+  const { analyticsByPage, totalPages, currentPage, loading } = useSelector(
+    (state) => state.analytics
+  );
+
+  const { shortUrlIds } = useSelector((state) => state.links);
+
+  useEffect(() => {
+    if (shortUrlIds && shortUrlIds.length > 0) {
+      dispatch(fetchAnalytics({ shortUrlIds, page: currentPage, limit: 10 }));
+    }
+  }, [shortUrlIds]);
 
   const analytics = analyticsByPage[currentPage] || [];
 

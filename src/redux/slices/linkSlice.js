@@ -26,7 +26,6 @@ export const createLink = createAsyncThunk(
   }
 );
 
-// Thunk to get all links for the current user
 export const getLinks = createAsyncThunk(
   "links/getLinks",
   async ({ page = 1, limit = 10 }, { rejectWithValue, getState }) => {
@@ -56,20 +55,52 @@ export const getLinks = createAsyncThunk(
   }
 );
 
-// Slice
+export const updateLink = createAsyncThunk(
+  "links/updateLink",
+  async (
+    { _id, destination_url, remarks, expiration },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await apiClient.put(`/link/update-link/${_id}`, {
+        destination_url,
+        remarks,
+        expiration,
+      });
+      toast.success(response.data.message);
+      return { _id, updatedLink: response.data.link };
+    } catch (error) {
+      toast.error("Failed to update link.");
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const deleteLink = createAsyncThunk(
+  "links/deleteLink",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.delete(`/link/delete-link/${id}`);
+      toast.success(response.data.message);
+      return { id };
+    } catch (error) {
+      toast.error("Failed to delete link.");
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 const linkSlice = createSlice({
   name: "links",
   initialState,
   reducers: {
-    resetError(state) {
-      state.error = null;
-    },
     setCurrentPage(state, action) {
       state.currentPage = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
+      // Handle createLink cases
       .addCase(createLink.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -85,7 +116,6 @@ const linkSlice = createSlice({
             action.payload,
           ];
         } else {
-          // If the current page doesn't exist in linksByPage yet
           state.linksByPage[currentPage] = [action.payload];
         }
       })
@@ -94,6 +124,7 @@ const linkSlice = createSlice({
         state.error = action.payload || "Failed to create link.";
       })
 
+      // Handle getLinks cases
       .addCase(getLinks.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -109,10 +140,53 @@ const linkSlice = createSlice({
       .addCase(getLinks.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch links.";
+      })
+
+      // Handle updateLink cases
+      .addCase(updateLink.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateLink.fulfilled, (state, action) => {
+        state.loading = false;
+        const { _id, updatedLink } = action.payload;
+        const currentPage = state.currentPage;
+
+        // Update the specific link in linksByPage
+        if (state.linksByPage[currentPage]) {
+          state.linksByPage[currentPage] = state.linksByPage[currentPage].map(
+            (link) => (link._id === _id ? updatedLink : link)
+          );
+        }
+      })
+      .addCase(updateLink.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to update link.";
+      })
+
+      // Handle deleteLink cases
+      .addCase(deleteLink.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteLink.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id } = action.payload;
+        const currentPage = state.currentPage;
+
+        if (state.linksByPage[currentPage]) {
+          state.linksByPage[currentPage] = state.linksByPage[currentPage].filter(
+            (link) => link._id !== id
+          );
+        }
+      })
+      .addCase(deleteLink.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to delete link.";
       });
   },
 });
 
-export const { resetError, setCurrentPage } = linkSlice.actions;
+export const { setCurrentPage } = linkSlice.actions;
 
 export default linkSlice.reducer;

@@ -1,0 +1,48 @@
+.delete-modal-component {
+  width: 496px;
+  height: 222px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  position: relative;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+.dmc-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 24px;
+}
+.delete-modal-component > p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+.dmc-btns {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dmc-btns > button {
+  width: 46%;
+  height: 34px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dmc-btns > button:nth-child(1) {
+  background-color: #ececee;
+  color: #000;
+}
+.dmc-btns > button:nth-child(2) {
+  background-color: #1b48da;
+  color: #fff;
+}

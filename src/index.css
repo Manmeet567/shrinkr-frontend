@@ -18,7 +18,8 @@ html {
 
 .dashboard,
 .links,
-.analytics {
+.analytics,
+.settings {
   display: flex;
 }
 .layout {

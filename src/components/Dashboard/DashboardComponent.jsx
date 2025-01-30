@@ -23,6 +23,7 @@ function DashboardComponent() {
         <div className="dc-date-wise">
           <p>Date-wise Clicks</p>
           <div className="dc-data">
+            {dailyClicks.length === 0 && <p>No data found</p>}
             {dailyClicks.map((day) => (
               <div className="dc-data-bar" key={day.date}>
                 <span>{day.date}</span>
@@ -41,44 +42,48 @@ function DashboardComponent() {
         </div>
         <div className="dc-click-devices">
           <p>Click Devices</p>
-          <div className="dc-data">
-            <div className="dc-data-bar">
-              <span>Mobile</span>
-              <div className="dcd-bar">
-                <div
-                  className="dcdb"
-                  style={{
-                    width: `${(deviceCount.mobile / totalClicks) * 100}%`,
-                  }}
-                ></div>
+          {dailyClicks.length === 0 ? (
+            <p style={{color:"#000", marginTop:"30px", fontSize:"16px", fontWeight:"400"}}>No data found!</p>
+          ) : (
+            <div className="dc-data">
+              <div className="dc-data-bar">
+                <span>Mobile</span>
+                <div className="dcd-bar">
+                  <div
+                    className="dcdb"
+                    style={{
+                      width: `${(deviceCount.mobile / totalClicks) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+                <span>{deviceCount.mobile}</span>
               </div>
-              <span>{deviceCount.mobile}</span>
-            </div>
-            <div className="dc-data-bar">
-              <span>Tablet</span>
-              <div className="dcd-bar">
-                <div
-                  className="dcdb"
-                  style={{
-                    width: `${(deviceCount.tablet / totalClicks) * 100}%`,
-                  }}
-                ></div>
+              <div className="dc-data-bar">
+                <span>Tablet</span>
+                <div className="dcd-bar">
+                  <div
+                    className="dcdb"
+                    style={{
+                      width: `${(deviceCount.tablet / totalClicks) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+                <span>{deviceCount.tablet}</span>
               </div>
-              <span>{deviceCount.tablet}</span>
-            </div>
-            <div className="dc-data-bar">
-              <span>Desktop</span>
-              <div className="dcd-bar">
-                <div
-                  className="dcdb"
-                  style={{
-                    width: `${(deviceCount.desktop / totalClicks) * 100}%`,
-                  }}
-                ></div>
+              <div className="dc-data-bar">
+                <span>Desktop</span>
+                <div className="dcd-bar">
+                  <div
+                    className="dcdb"
+                    style={{
+                      width: `${(deviceCount.desktop / totalClicks) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+                <span>{deviceCount.desktop}</span>
               </div>
-              <span>{deviceCount.desktop}</span>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

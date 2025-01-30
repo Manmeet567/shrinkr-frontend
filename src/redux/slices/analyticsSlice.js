@@ -11,7 +11,6 @@ const initialState = {
   error: null,
 };
 
-// Thunk to fetch paginated analytics
 export const fetchAnalytics = createAsyncThunk(
   "analytics/fetchAnalytics",
   async (
@@ -54,9 +53,8 @@ export const getCompleteAnalytics = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await apiClient.get(`/clicks/analytics`);
-      return response.data; // Assuming response contains the complete analytics
+      return response.data; 
     } catch (error) {
-      toast.error("Failed to fetch complete analytics.");
       return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
@@ -72,7 +70,6 @@ const analyticsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Handle paginated analytics
       .addCase(fetchAnalytics.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -90,18 +87,17 @@ const analyticsSlice = createSlice({
         state.error = action.payload || "Failed to fetch analytics.";
       })
       
-      // Handle complete analytics
       .addCase(getCompleteAnalytics.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(getCompleteAnalytics.fulfilled, (state, action) => {
         state.loading = false;
-        state.completeAnalytics = action.payload; // Store complete analytics data
+        state.completeAnalytics = action.payload; 
       })
       .addCase(getCompleteAnalytics.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Failed to fetch complete analytics.";
+        state.error = action.payload;
       });
   },
 });

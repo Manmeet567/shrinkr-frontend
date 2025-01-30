@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { setCurrentPage } from "../../redux/slices/linkSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,10 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import { IoCopyOutline } from "react-icons/io5";
 import { getLinks } from "../../redux/slices/linkSlice";
+import { FaCheckCircle } from "react-icons/fa";
+import SlidingPanel from "../SlidingPanel/SlidingPanel";
+import Modal from "../Modal/Modal";
+import DeleteModalComponent from "../DeleteModal/DeleteModalComponent";
 
 const getStatus = (expiration) => {
   const currentDate = new Date();
@@ -18,11 +22,44 @@ const getStatus = (expiration) => {
 
 const LinkComponent = () => {
   const dispatch = useDispatch();
-  const { linksByPage, totalPages, currentPage, loading, shortUrlIds } =
-    useSelector((state) => state.links);
+  const { linksByPage, totalPages, currentPage, loading } = useSelector(
+    (state) => state.links
+  );
   const limit = 10;
 
   const links = linksByPage[currentPage] || [];
+
+  const [copiedLink, setCopiedLink] = useState(null);
+  const [isPanelVisible, setIsPanelVisible] = useState(false);
+  const [selectedLink, setSelectedLink] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteLink, setDeleteLink] = useState(null);
+
+  const openModal = (link) => {
+    setDeleteLink(link);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => setIsModalOpen(false);
+
+  const togglePanel = () => {
+    setIsPanelVisible((prev) => !prev);
+  };
+
+  const handleCopyClick = (shortUrlId) => {
+    const shortUrl = `${import.meta.env.VITE_SERVER_BASE_URL}/${shortUrlId}`;
+    navigator.clipboard
+      .writeText(shortUrl)
+      .then(() => {
+        setCopiedLink(shortUrlId);
+        setTimeout(() => setCopiedLink(null), 3000);
+      })
+      .catch((err) => console.error("Failed to copy text:", err));
+  };
+
+  const handleEditClick = (link) => {
+    setSelectedLink(link); // <-- Set the link to be edited
+    setIsPanelVisible(true); // <-- Open the sliding panel
+  };
 
   const columns = [
     {
@@ -67,7 +104,12 @@ const LinkComponent = () => {
           >
             {`${import.meta.env.VITE_SERVER_BASE_URL}/${row.short_url_id}`}
           </p>
-          <IoCopyOutline className="sl-copy-icon" />
+          <IoCopyOutline
+            className={`sl-copy-icon ${
+              copiedLink === row.short_url_id ? "copied" : ""
+            }`}
+            onClick={() => handleCopyClick(row.short_url_id)}
+          />
         </div>
       ),
     },
@@ -77,7 +119,7 @@ const LinkComponent = () => {
     },
     {
       name: "Clicks",
-      selector: (row) => row.clicks || "N/A",
+      selector: (row) => row.count || "0",
     },
     {
       name: "Status",
@@ -91,10 +133,16 @@ const LinkComponent = () => {
     },
     {
       name: "Action",
-      cell: () => (
+      cell: (row) => (
         <div>
-          <MdEdit className="icon-button" />
-          <RiDeleteBin6Line className="icon-button" />
+          <MdEdit
+            className="icon-button"
+            onClick={() => handleEditClick(row)}
+          />
+          <RiDeleteBin6Line
+            className="icon-button"
+            onClick={() => openModal(row)}
+          />
         </div>
       ),
     },
@@ -129,7 +177,7 @@ const LinkComponent = () => {
     if (page > 0 && page <= totalPages) {
       if (page !== currentPage) {
         dispatch(setCurrentPage(page));
-        dispatch(getLinks({ page, limit })); 
+        dispatch(getLinks({ page, limit }));
       }
     }
   };
@@ -187,6 +235,27 @@ const LinkComponent = () => {
           </div>
         </div>
       )}
+      {copiedLink && (
+        <div className="sl-copy-link">
+          <FaCheckCircle
+            style={{ color: "#1B48DA", fontSize: "20px", marginRight: "10px" }}
+          />{" "}
+          <span>Link Copied</span>
+        </div>
+      )}
+      <SlidingPanel
+        isVisible={isPanelVisible}
+        togglePanel={togglePanel}
+        type="edit"
+        linkData={selectedLink}
+      />
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <DeleteModalComponent
+          link={deleteLink}
+          type="link"
+          onClose={closeModal}
+        />
+      </Modal>
     </div>
   );
 };
