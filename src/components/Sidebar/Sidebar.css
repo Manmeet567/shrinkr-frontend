@@ -4,6 +4,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: left 0.4s ease;
+}
+.s-close {
+  display: none;
 }
 .s-logo {
   height: 80px;
@@ -58,4 +62,31 @@
   padding: 20px 40px;
   border-top: 1px solid #f6f6f9;
   border-bottom: 1px solid #f6f6f9;
+}
+
+@media only screen and (max-width: 1160px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 320px;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 1000;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  .s-close {
+    display: block;
+    font-size: 30px;
+    cursor: pointer;
+  }
+  .s-logo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sidebar.show-sidebar {
+    left: 0;
+  }
 }

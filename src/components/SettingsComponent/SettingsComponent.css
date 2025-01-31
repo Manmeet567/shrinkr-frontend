@@ -54,3 +54,13 @@
   background-color: #eb0d0d;
   border: 1px solid #eb0d0d;
 }
+@media only screen and (max-width: 1160px) {
+  .sc-form {
+    margin: 60px auto;
+  }
+}
+@media only screen and (max-width: 540px){
+  .sc-form{
+    width: 100%;
+  }
+}

@@ -7,8 +7,10 @@ import "./Navbar.css";
 import SlidingPanel from "../SlidingPanel/SlidingPanel";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
+import { IoMenuOutline } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 
-function Navbar() {
+function Navbar({ setOpenMenu }) {
   const dispatch = useDispatch();
 
   const [isPanelVisible, setIsPanelVisible] = useState(false);
@@ -56,26 +58,27 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className="n-greet">
-          <div className="ng-greet">
-            {/* Dynamically switch between sun and night image */}
-            <img
-              style={{ marginRight: "5px" }}
-              src={isNight ? night : sun}
-              alt="sun or night"
-            />
-            <span>
-              {greeting}, {userData?.name}
-            </span>
+        <div className="n-right-options">
+          <IoMenuOutline className="n-menu" onClick={() => setOpenMenu(true)} />
+          <div className="n-greet">
+            <div className="ng-greet">
+              <img
+                style={{ marginRight: "5px" }}
+                src={isNight ? night : sun}
+                alt="sun or night"
+              />
+              <span>
+                {greeting}, {userData?.name}
+              </span>
+            </div>
+            <p>{currentDate}</p>
           </div>
-          {/* Display the current date */}
-          <p>{currentDate}</p>
         </div>
 
         <div className="n-left-options">
           <button onClick={togglePanel}>
-            <HiPlus style={{ marginRight: "6px", fontSize: "20px" }} />
-            Create new
+            <HiPlus className="nlcl" />
+            <span className="nlcn">Create new</span>
           </button>
           <div className="n-search-bar">
             <IoIosSearch style={{ marginRight: "6px", fontSize: "20px" }} />

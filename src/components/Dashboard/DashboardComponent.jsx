@@ -17,7 +17,7 @@ function DashboardComponent() {
     <div className="dashboard-component">
       <div className="dc-clicks">
         <span>Total Clicks</span>
-        <span>{totalClicks}</span> {/* Total clicks from the API */}
+        <span>{totalClicks}</span> 
       </div>
       <div className="dc-analytics">
         <div className="dc-date-wise">

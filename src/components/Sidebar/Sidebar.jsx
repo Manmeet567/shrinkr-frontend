@@ -5,12 +5,14 @@ import { NavLink } from "react-router-dom";
 import { ImLink } from "react-icons/im";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import { MdOutlineSettings, MdOutlineDashboard } from "react-icons/md";
+import { IoCloseSharp } from "react-icons/io5";
 
-function Sidebar() {
+function Sidebar({ openMenu, setOpenMenu }) {
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${openMenu ? "show-sidebar" : ""}`}>
       <div className="s-logo">
         <img src={logo} alt="logo" />
+        <IoCloseSharp className="s-close" onClick={() => setOpenMenu(false)} />
       </div>
       <div className="s-options">
         <NavLink

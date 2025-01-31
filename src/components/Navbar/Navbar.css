@@ -5,6 +5,15 @@
   width: 100%;
   padding: 10px 20px;
   position: relative;
+  z-index: 1;
+  user-select: none;
+}
+.n-right-options {
+  display: flex;
+  align-items: center;
+}
+.n-menu {
+  display: none;
 }
 .n-greet > p {
   margin-left: 21px;
@@ -44,6 +53,10 @@
   background-color: #1b48da;
   cursor: pointer;
   margin-right: 20px;
+}
+.nlcl {
+  margin-right: 6px;
+  font-size: 20px;
 }
 .n-search-bar {
   width: 240px;
@@ -92,4 +105,39 @@
   right: 20px;
   bottom: -15px;
   z-index: 1;
+}
+@media only screen and (max-width: 1160px) {
+  .navbar {
+    padding: 10px 40px;
+  }
+  .n-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 30px;
+    z-index: 10;
+    cursor: pointer;
+    color: #181820;
+  }
+}
+@media only screen and (max-width: 790px) {
+  .navbar{
+    padding: 0px 15px;
+  }
+  .ng-greet > span {
+    font-size: 14px;
+  }
+  .n-greet > p {
+    font-size: 12px;
+  }
+  .n-search-bar {
+    display: none;
+  }
+  .nlcl{
+    margin-right: 0;
+  }
+  .nlcn {
+    display: none;
+  }
 }

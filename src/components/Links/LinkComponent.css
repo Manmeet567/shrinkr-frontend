@@ -88,13 +88,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 200px;
+  width: 100%;
 }
 
 .sl-link {
   white-space: nowrap;
   overflow: hidden;
-  max-width: 140px;
+  /* max-width: 140px; */
+  margin-right: 10px;
   cursor: pointer;
 }
 .sl-original-link {
@@ -116,7 +117,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 20px;
+  width: 50px;
 }
 
 .icon-button {
@@ -135,14 +137,14 @@
   width: 60px;
 }
 
-.sl-copy-link{
+.sl-copy-link {
   width: 215px;
   height: 42px;
   position: absolute;
   bottom: 40px;
   left: 40px;
   background-color: #fff;
-  border: 1px solid #1B48DA;
+  border: 1px solid #1b48da;
   color: #000;
   font-size: 14px;
   font-weight: 600;
@@ -150,4 +152,18 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+}
+@media only screen and (max-width: 790px) {
+  .lc-data-table {
+    height: calc(100vh - 192px);
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  .link-component {
+    padding: 30px;
+  }
+  .lc-data-table {
+    height: calc(100vh - 132px);
+  }
 }

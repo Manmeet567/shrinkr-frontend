@@ -10,3 +10,8 @@
   align-items: center;
   z-index: 1000;
 }
+@media only screen and (max-width: 540px){
+  .modal-overlay{
+    padding: 20px;
+  }
+}
