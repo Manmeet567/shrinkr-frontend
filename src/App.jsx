@@ -48,6 +48,8 @@ function App() {
     <div className="app">
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
