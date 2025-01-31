@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import PublicRoute from "./components/PrivateRoute/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
