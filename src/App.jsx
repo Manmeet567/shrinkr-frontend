@@ -24,9 +24,6 @@ function App() {
   );
   const limit = 10;
   const token = localStorage.getItem("token");
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
 
   useEffect(() => {
     if (token && !userData) {

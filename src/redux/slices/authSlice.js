@@ -57,7 +57,6 @@ export const updateUserData = createAsyncThunk(
   "auth/updateUserData",
   async (updatedFields, { rejectWithValue }) => {
     try {
-      console.log("updated", updatedFields);
       const response = await apiClient.patch(
         "/user/update-user-info",
         updatedFields
